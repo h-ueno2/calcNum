@@ -6,47 +6,81 @@
 </head>
 <body>
 <script type="text/javascript">
+var _nums = [],
+    _defaultForm = 2,
+    _form = _defaultForm;
 
 function putButton(){
-  var _nums = {};
+  _nums = []
+  //var _num1 = document.getElementById("num1").value;
+  //var _num2 = document.getElementById("num2").value;
+  for(var i=0; i<_form; i++){
+    _nums.push(document.getElementById("num" + (i+1)).value);
+  }
 
-
-  var _num1 = document.getElementById("num1").value;
-  var _num2 = document.getElementById("num2").value;
   var isError = true;
   var out = "";
 
-  if(isEmpty(_num1) || isEmpty(_num2)){
+  if(checkEmpty(_nums)){
     out = "<font color=\"#ff0000\">何も入力されていません。数値を入力してください。</font>";
-  }else if(isNumeric(_num1)||isNumeric(_num2)){
+  }else if(checkNumeric(_nums)){
     out = "<font color=\"#ff0000\">入力されたのは数値ではありません。数値を入力してください。</font>";
   }else{
     isError = false;
   }
 
   if(!isError){
-    out = Number(_num1) + Number(_num2);
+    out = _calcAddiction(_nums);
   }
 
+  out += "</br>"+_nums;
   document.getElementById("result").innerHTML = out;
 
 }
 
-function _calcAddiction(){
+function _calcAddiction(valueArray){
   //足し算
-
+  var result=0;
+  for (var i = 0; i < valueArray.length; i++) {
+    result += Number(valueArray[i]);
+  }
+  return result;
 }
 
-function _calcSubtraction(){
+function _calcSubtraction(valueArray){
   //引き算
+  var result=valueArray[0];
+  for (var i = 1; i < valueArray.length; i++) {
+    result -= Number(valueArray[i]);
+  }
+  return result;
+}
 
+
+function checkEmpty(values){
+  var empty = false;
+  for(var i=0; i<values.length; i++){
+    isEmpty(values[i])? empty=true : empty=false;
+  }
+  return empty;
 }
 
 function isEmpty(value){
+  //空文字チェック
   return value=="" ? true : false;
 }
 
+function checkNumeric(values){
+  var numeric = false;
+  for(var i=0; i<values.length; i++){
+    isNumeric(values[i])? numeric=true : numeric=false;
+  }
+  console.log(numeric);
+  return numeric;
+}
+
 function isNumeric(value){
+  //数値チェック
   return value.match(/[^0-9]+/);
 }
 
