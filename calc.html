@@ -1,98 +1,115 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
 <html lang="ja">
+
 <head>
   <title>test</title>
 </head>
+
 <body>
-<script type="text/javascript">
-var _nums = [],
-    _defaultForm = 2,
-    _form = _defaultForm;
+  <script type="text/javascript">
+    var _nums = [],
+      _defaultForm = 2,
+      _form = _defaultForm,
+      _calcType=0;
 
-function putButton(){
-  _nums = []
-  //var _num1 = document.getElementById("num1").value;
-  //var _num2 = document.getElementById("num2").value;
-  for(var i=0; i<_form; i++){
-    _nums.push(document.getElementById("num" + (i+1)).value);
-  }
+    function putButton() {
+      _nums = [];
+      for (var i = 0; i < _form; i++) {
+        _nums.push(document.getElementById("num" + (i + 1)).value);
+      }
 
-  var isError = true;
-  var out = "";
+      var isError = true;
+      var out = "";
 
-  if(checkEmpty(_nums)){
-    out = "<font color=\"#ff0000\">何も入力されていません。数値を入力してください。</font>";
-  }else if(checkNumeric(_nums)){
-    out = "<font color=\"#ff0000\">入力されたのは数値ではありません。数値を入力してください。</font>";
-  }else{
-    isError = false;
-  }
+      if (checkEmpty(_nums)) {
+        out = "<font color=\"#ff0000\">何も入力されていません。数値を入力してください。</font>";
+      } else if (checkNumeric(_nums)) {
+        out = "<font color=\"#ff0000\">入力されたのは数値ではありません。数値を入力してください。</font>";
+      } else {
+        isError = false;
+      }
 
-  if(!isError){
-    out = _calcAddiction(_nums);
-  }
+      if (!isError) {
+        switch (_calcType) {
+          case 0:
+            out = _calcAddiction(_nums);
+            break;
+          case 1:
+            out = _calcSubtraction(_nums);
+            break;
+          default:
+        }
+      }
 
-  out += "</br>"+_nums;
-  document.getElementById("result").innerHTML = out;
+      document.getElementById("result").innerHTML = out;
 
-}
+    }
 
-function _calcAddiction(valueArray){
-  //足し算
-  var result=0;
-  for (var i = 0; i < valueArray.length; i++) {
-    result += Number(valueArray[i]);
-  }
-  return result;
-}
+    function _calcAddiction(valueArray) {
+      //足し算
+      console.log("calcAddition");
+      var result = 0;
+      for (var i = 0; i < valueArray.length; i++) {
+        result += Number(valueArray[i]);
+      }
+      return result;
+    }
 
-function _calcSubtraction(valueArray){
-  //引き算
-  var result=valueArray[0];
-  for (var i = 1; i < valueArray.length; i++) {
-    result -= Number(valueArray[i]);
-  }
-  return result;
-}
-
-
-function checkEmpty(values){
-  var empty = false;
-  for(var i=0; i<values.length; i++){
-    isEmpty(values[i])? empty=true : empty=false;
-  }
-  return empty;
-}
-
-function isEmpty(value){
-  //空文字チェック
-  return value=="" ? true : false;
-}
-
-function checkNumeric(values){
-  var numeric = false;
-  for(var i=0; i<values.length; i++){
-    isNumeric(values[i])? numeric=true : numeric=false;
-  }
-  console.log(numeric);
-  return numeric;
-}
-
-function isNumeric(value){
-  //数値チェック
-  return value.match(/[^0-9]+/);
-}
+    function _calcSubtraction(valueArray) {
+      //引き算
+      console.log("calcSubstraction");
+      var result = valueArray[0];
+      for (var i = 1; i < valueArray.length; i++) {
+        result -= Number(valueArray[i]);
+      }
+      return result;
+    }
 
 
-</script>
+    function checkEmpty(values) {
+      var empty = false;
+      for (var i = 0; i < values.length; i++) {
+        isEmpty(values[i]) ? empty = true : empty = false;
+      }
+      return empty;
+    }
+
+    function isEmpty(value) {
+      //空文字チェック
+      return value == "" ? true : false;
+    }
+
+    function checkNumeric(values) {
+      var numeric = false;
+      for (var i = 0; i < values.length; i++) {
+        isNumeric(values[i]) ? numeric = true : numeric = false;
+      }
+      return numeric;
+    }
+
+    function isNumeric(value) {
+      //数値チェック
+      return value.match(/[^0-9]+/);
+    }
+
+    function changeCalcType() {
+      _calcType = document.getElementById("calcType").selectedIndex;
+    }
+  </script>
 
   <input type="text" id="num1" value="">
 
   <input type="text" id="num2" value="">
 
-  <input type="button" name="button1" value="計算" onClick="putButton()">
+  <select id="calcType" onChange="changeCalcType()">
+    <option value="1">足し算</option>
+    <option value="2">引き算</option>
+  </select>
+
+  <input type="button" name="button1" value="計算" onclick="putButton()">
   </br>
   <div id="result">
 </body>
+
 </html>
