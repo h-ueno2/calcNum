@@ -7,11 +7,33 @@
 </head>
 
 <body>
+  <input type="text" id="num1" value="">
+  <input type="text" id="num2" value="">
+  <select id="calcType" onChange="changeCalcType(this)">
+  </select>
+  <input type="button" name="button1" value="計算" onclick="putButton()">
+  </br>
+  <div id="result">
+
+
   <script type="text/javascript">
     var _nums = [],
       _defaultForm = 2,
       _form = _defaultForm,
-      _calcType=0;
+      _calcType = 0;
+      _calcTypeArray = ["足し算", "引き算", "掛け算", "割り算"];
+
+    init();
+
+    function init(){
+      var selectBox = document.getElementById("calcType");
+      console.log(selectBox);
+      for(var i=0; i<_calcTypeArray.length; i++){
+        console.log(selectBox.options.length);
+        selectBox.options.length++;
+        selectBox.options[i].text = _calcTypeArray[i];
+      }
+    }
 
     function putButton() {
       _nums = [];
@@ -33,11 +55,13 @@
       if (!isError) {
         switch (_calcType) {
           case 0:
-            out = _calcAddiction(_nums);
-            break;
+            out = _calcAddiction(_nums); break;
           case 1:
-            out = _calcSubtraction(_nums);
-            break;
+            out = _calcSubtraction(_nums); break;
+          case 2:
+            out = _calcMultiplication(_nums); break;
+          case 3:
+            out = _calcDivision(_nums); break;
           default:
         }
       }
@@ -48,24 +72,34 @@
 
     function _calcAddiction(valueArray) {
       //足し算
-      console.log("calcAddition");
       var result = 0;
-      for (var i = 0; i < valueArray.length; i++) {
+      for (var i = 0; i < valueArray.length; i++)
         result += Number(valueArray[i]);
-      }
       return result;
     }
 
     function _calcSubtraction(valueArray) {
       //引き算
-      console.log("calcSubstraction");
       var result = valueArray[0];
-      for (var i = 1; i < valueArray.length; i++) {
+      for (var i = 1; i < valueArray.length; i++)
         result -= Number(valueArray[i]);
-      }
       return result;
     }
 
+    function _calcMultiplication(valueArray) {
+      //掛け算
+      var result = valueArray[0];
+      for (var i = 1; i < valueArray.length; i++)
+        result *= Number(valueArray[i]);
+      return result;
+    }
+
+    function _calcDivision(valueArray) {
+      var result = valueArray[0];
+      for (var i = 1; i < valueArray.length; i++)
+        result /= Number(valueArray[i]);
+      return result;
+    }
 
     function checkEmpty(values) {
       var empty = false;
@@ -93,23 +127,10 @@
       return value.match(/[^0-9]+/);
     }
 
-    function changeCalcType() {
-      _calcType = document.getElementById("calcType").selectedIndex;
+    function changeCalcType(obj) {
+      _calcType = obj.selectedIndex;
     }
   </script>
-
-  <input type="text" id="num1" value="">
-
-  <input type="text" id="num2" value="">
-
-  <select id="calcType" onChange="changeCalcType()">
-    <option value="1">足し算</option>
-    <option value="2">引き算</option>
-  </select>
-
-  <input type="button" name="button1" value="計算" onclick="putButton()">
-  </br>
-  <div id="result">
 </body>
 
 </html>
