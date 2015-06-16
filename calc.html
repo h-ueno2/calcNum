@@ -4,16 +4,18 @@
 
 <head>
   <title>test</title>
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
 </head>
 
 <body>
+  <div id="textBox"></div>
+  <input type="text" id="num0" value="">
   <input type="text" id="num1" value="">
-  <input type="text" id="num2" value="">
   <select id="calcType" onChange="changeCalcType(this)">
   </select>
   <input type="button" name="button1" value="計算" onclick="putButton()">
   </br>
-  <div id="result">
+  <div id="result"></div>
 
 
   <script type="text/javascript">
@@ -26,19 +28,27 @@
     init();
 
     function init(){
+      //create option
       var selectBox = document.getElementById("calcType");
-      console.log(selectBox);
       for(var i=0; i<_calcTypeArray.length; i++){
-        console.log(selectBox.options.length);
         selectBox.options.length++;
         selectBox.options[i].text = _calcTypeArray[i];
       }
+
+      //create text form
+      /*
+      for(var i = 0; i<_defaultForm;i++){
+        console.log(i);
+        document.getElementById("textBox").innerHTML =
+        "<input type=\"text\" id=\"num"+ i +"\" value=\"\" >";
+      }
+      */
     }
 
     function putButton() {
       _nums = [];
       for (var i = 0; i < _form; i++) {
-        _nums.push(document.getElementById("num" + (i + 1)).value);
+        _nums.push(document.getElementById("num" + i).value);
       }
 
       var isError = true;
@@ -130,6 +140,8 @@
     function changeCalcType(obj) {
       _calcType = obj.selectedIndex;
     }
+
+
   </script>
 </body>
 
