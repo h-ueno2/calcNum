@@ -1,5 +1,3 @@
-
-
 function _calcAddiction(valueArray) {
   //足し算
   var result = 0;
