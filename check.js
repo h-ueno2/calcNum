@@ -24,3 +24,15 @@ function isNumeric(value) {
   //数値チェック
   return value.match(/[^0-9]+/);
 }
+
+function checkTextBox(nums){
+  var out = "";
+  if (checkEmpty(nums)) {
+    out = "<font color=\"#ff0000\">何も入力されていません。数値を入力してください。</font>";
+  } else if (checkNumeric(nums)) {
+    out = "<font color=\"#ff0000\">入力されたのは数値ではありません。数値を入力してください。</font>";
+  } else {
+    out = "";
+  }
+  return out;
+}

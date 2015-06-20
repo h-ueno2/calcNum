@@ -1,3 +1,24 @@
+function calcNumerics(calcType, nums){
+  var out = "";
+  console.log(calcType);
+  switch (calcType) {
+    case 0:
+      out = _calcAddiction(nums);
+      break;
+    case 1:
+      out = _calcSubtraction(nums);
+      break;
+    case 2:
+      out = _calcMultiplication(nums);
+      break;
+    case 3:
+      out = _calcDivision(nums);
+      break;
+    default:
+  }
+  return out;
+}
+
 function _calcAddiction(valueArray) {
   //足し算
   var result = 0;
