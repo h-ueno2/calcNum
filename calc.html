@@ -6,13 +6,10 @@
   <title>test</title>
   <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
   <script src="/calcNum.js"></script>
+  <script src="/check.js"></script>
 </head>
 
 <body>
-  <!--
-  <input type="text" id="num0" value="">
-  <input type="text" id="num1" value="">
--->
   <select id="calcType">
   </select>
   <input type="button" class="calcButton" value="計算">
@@ -21,13 +18,13 @@
 </body>
 
 <script type="text/javascript">
-  $(function(){
+  $(function() {
 
     var _nums = [],
-    _defaultForm = 2,
-    _form = _defaultForm,
-    _calcType = 0,
-    _calcTypeArray = ["足し算", "引き算", "掛け算", "割り算"];
+      _defaultForm = 2,
+      _form = _defaultForm,
+      _calcType = 0,
+      _calcTypeArray = ["足し算", "引き算", "掛け算", "割り算"];
 
     init();
 
@@ -36,76 +33,59 @@
         $("#calcType").append($("<option>").text(_calcTypeArray[i]));
       }
 
-      $("#calcType").on("change",function(){
-        _calcType =$("#calcType").selectedIndex;
+      $("#calcType").on("change", function() {
+
+        _calcType = $("#calcType").prop('selectedIndex');
+        console.log(_calcType);
       });
 
-      $(document).prepend($('<input type="text" id="num0" value="">'));
-
-    }
-
-
-    function putButton() {
-      _nums = [];
-      for (var i = 0; i < _form; i++) {
-        _nums.push(document.getElementById("num" + i).value);
+      for (var i = _form - 1; i >= 0; i--) {
+        $("body").prepend($('<input />').attr({
+          'type': 'text',
+          'id': 'num' + i,
+          'value': ''
+        }));
       }
 
-      var isError = true;
-      var out = "";
-
-      if (checkEmpty(_nums)) {
-        out = "<font color=\"#ff0000\">何も入力されていません。数値を入力してください。</font>";
-      } else if (checkNumeric(_nums)) {
-        out = "<font color=\"#ff0000\">入力されたのは数値ではありません。数値を入力してください。</font>";
-      } else {
-        isError = false;
-      }
-
-      if (!isError) {
-        switch (_calcType) {
-          case 0:
-            out = _calcAddiction(_nums);
-            break;
-          case 1:
-            out = _calcSubtraction(_nums);
-            break;
-          case 2:
-            out = _calcMultiplication(_nums);
-            break;
-          case 3:
-            out = _calcDivision(_nums);
-            break;
-          default:
+      $('.calcButton').on('click', function() {
+        _nums = [];
+        for (var i = 0; i < _form; i++) {
+          _nums.push($('#num' + i).val());
         }
-      }
-      document.getElementById("result").innerHTML = out;
-    }
 
+        var isError = true;
+        var out = "";
+
+        if (checkEmpty(_nums)) {
+          out = "<font color=\"#ff0000\">何も入力されていません。数値を入力してください。</font>";
+        } else if (checkNumeric(_nums)) {
+          out = "<font color=\"#ff0000\">入力されたのは数値ではありません。数値を入力してください。</font>";
+        } else {
+          isError = false;
+        }
+
+        if (!isError) {
+          switch (_calcType) {
+            case 0:
+              out = _calcAddiction(_nums);
+              break;
+            case 1:
+              out = _calcSubtraction(_nums);
+              break;
+            case 2:
+              out = _calcMultiplication(_nums);
+              break;
+            case 3:
+              out = _calcDivision(_nums);
+              break;
+            default:
+          }
+        }
+        $('#result').prepend(out + "</br>");
+      });
+    }
   });
 
-  /*
-  var _nums = [],
-    _defaultForm = 2,
-    _form = _defaultForm,
-    _calcType = 0,
-    _calcTypeArray = ["足し算", "引き算", "掛け算", "割り算"];
-
-  init();
-
-
-  function init() {
-    //create option
-    var selectBox = document.getElementById("calcType");
-    console.log(selectBox);
-    for (var i = 0; i < _calcTypeArray.length; i++) {
-      selectBox.options.length++;
-      selectBox.options[i].text = _calcTypeArray[i];
-    }
-  }
-
-
-  */
 </script>
 
 </html>
