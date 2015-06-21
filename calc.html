@@ -10,9 +10,14 @@
 </head>
 
 <body>
+  <div id="textFormDiv"></div>
   <select id="calcType">
   </select>
-  <input type="button" class="calcButton" value="計算">
+  <input type="button" id="calcButton" value="計算">
+  </br>
+  <input type="button" id="addFormButton" value="数値追加">
+  <input type="button" id="removeFormButton" value="数値削除">
+  <input type="button" id="clearButton" value="結果消去">
   </br>
   <div id="result"></div>
 </body>
@@ -20,54 +25,70 @@
 <script type="text/javascript">
   $(function() {
 
+
     var _nums = [],
       _defaultForm = 2,
       _form = _defaultForm,
       _calcType = 0,
       _calcTypeArray = ["足し算", "引き算", "掛け算", "割り算"];
-
-    init();
+    //_calcTypeArrayの存在がなんかダサい→計算方法を追加したときとかの変更点を少なくしたい
 
     function init() {
-      for (var i = 0; i < _calcTypeArray.length; i++) {
+      for (var i = 0; i < _calcTypeArray.length; i++)
         $("#calcType").append($("<option>").text(_calcTypeArray[i]));
-      }
 
       $("#calcType").on("change", function() {
         _calcType = $("#calcType").prop('selectedIndex');
       });
 
-      for (var i = _form - 1; i >= 0; i--) {
-        $("body").prepend($('<input />').attr({
-          'type': 'text',
-          'id': 'num' + i,
-          'value': ''
-        }));
+      for (var i=0;i<_form ; i++) {
+        $("#textFormDiv").append(setTextForm(i));
       }
 
-      //ボタンを押したときの処理
-      $('.calcButton').on('click', function() {
+      //calcButtonを押したときの処理
+      $('#calcButton').on('click', function() {
         _nums = [];
-
         //入力された値の取得
-        for (var i = 0; i < _form; i++) {
+        for (var i = 0; i < _form; i++)
           _nums.push($('#num' + i).val());
-        }
-
         //値のチェック
         var out = checkTextBox(_nums);
-
         //計算
-        if (out == "") {
+        if (out == "")
           out = calcNumerics(_calcType, _nums);
-        }
-
         //表示
         $('#result').prepend(out + "</br>");
       });
-    }
-  });
 
+
+      //addFormButtonを押したときの処理
+      $('#addFormButton').on('click', function() {
+        $("#textFormDiv").append(setTextForm(_form++));
+
+      });
+
+      //removeFormButtonを押したときの処理
+      $('#removeFormButton').on('click', function() {
+        $('.textForm').remove('#num'+ --_form);
+      });
+
+      $('#clearButton').on('click', function() {
+        $("#result").empty();
+      });
+    }
+
+    function setTextForm(num) {
+      return $('<input />').attr({
+        'type': 'text',
+        'class':  'textForm',
+        'id': 'num' + num,
+        'value': ''
+      });
+    }
+
+
+    init();
+  });
 </script>
 
 </html>
